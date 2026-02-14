@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #cards {
+        display: flex;
+        justify-content: center;
+        gap: 1.5em;
+        margin: 30px;
+      }
+      #cube {
+        margin: 1em;
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+      }
+      #reset {
+        display: flex;
+        justify-content: center;
+      }
+      #newGame {
+        display: flex;
+        justify-content: center;
+      }
+      .buttonMenu {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cards"></div>
+    <div id="cube">
+      <button id="cubeButton1"></button>
+      <button id="cubeButton2"></button>
+    </div>
+    <div class="buttonMenu">
+      <button id="reset">Reset</button>
+      <button id="newGame">Start new game</button>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
