@@ -1,7 +1,7 @@
 class player {
   constructor() {
-    this.cards;
-    this.playerEl;
+    this.cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    this.playerEl = Element;
   }
 }
 
@@ -9,20 +9,22 @@ let player1 = new player();
 player1.playerEl = document.querySelector("#firstPlayer");
 let player2 = new player();
 player2.playerEl = document.querySelector("#secondPlayer");
-let players = [player1, player2];
+let players = [];
+let numOfPlayers;
 
 let activePlayer = 0;
 let cube1;
 let cube2;
 
 let rerolButton;
-let resetButton = document.querySelector("#newGame");
 let cubeButton1;
 let cubeButton2;
-let cubeEl = document.querySelector("#cube");
 
-reset();
-resetButton.addEventListener("click", () => reset(players[0]));
+let startButton = document.querySelector("#playerCountButton");
+startButton.addEventListener("click", startGame);
+
+//reset();
+//resetButton.addEventListener("click", () => reset(players[0]));
 
 function renderCards(player) {
   let cardsEl = player.playerEl.querySelector(".cards");
@@ -74,7 +76,6 @@ function reset() {
     "Player " + (activePlayer + 1) + " turn";
   for (let player of players) {
     player.cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
     renderCards(player);
   }
 
@@ -129,8 +130,41 @@ function deleteTwoCards() {
 }
 
 function switchPlayer() {
-  activePlayer = activePlayer === 0 ? 1 : 0;
+  activePlayer = (activePlayer + 1) % numOfPlayers;
   document.querySelector("#turn").innerHTML =
     "Player " + (activePlayer + 1) + " turn";
   rollDice();
+}
+
+function startGame() {
+  let playerContanerEl = document.querySelector("#playerContaner");
+  numOfPlayers = document.querySelector("#playerCount").value;
+  for (i = 0; i < numOfPlayers; i++) {
+    let playerN = new player();
+    playerN.playerEl = document.createElement("div");
+    playerContanerEl.appendChild(playerN.playerEl);
+    players.push(playerN);
+    let playerWidth = 90 / numOfPlayers;
+    playerN.playerEl.style.width = playerWidth + "%";
+    createPlaerUI(playerN);
+  }
+
+  resetButton = document.querySelector("#newGame");
+  cubeEl = document.createElement("div");
+  cubeEl.id = "cube";
+  playerContanerEl.appendChild(cubeEl);
+
+  reset();
+}
+
+function createPlaerUI(player) {
+  /*
+  let playerId = document.createElement("div");
+  playerId.innerText = "Player " + players.indexOf(player);
+  playerId.style.justifyContent = "center";
+  player.playerEl.appendChild(playerId);
+  */
+  cardsEl = document.createElement("div");
+  cardsEl.classList.add("cards");
+  player.playerEl.appendChild(cardsEl);
 }

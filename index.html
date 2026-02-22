@@ -9,8 +9,8 @@
         display: flex;
         justify-content: center;
         gap: 1em;
-        margin: 30px;
-        padding: 30px;
+        margin: 5%;
+        padding: 5%;
         flex-wrap: wrap;
         background-color: rgb(126, 126, 126);
       }
@@ -65,17 +65,21 @@
   </head>
   <body>
     <main>
-      <div id="turn"></div>
-      <div class="playerContaner">
-        <div id="firstPlayer">
-          <div class="cards"></div>
-        </div>
-        <div id="secondPlayer">
-          <div class="cards"></div>
-        </div>
+      <div style="display: flex">
+        <input
+          id="playerCount"
+          style="width: 20%; min-width: 10em"
+          type="number"
+          placeholder="Number of players"
+          min="1"
+          max="100"
+          step="1"
+        />
+        <button id="playerCountButton">Enter</button>
       </div>
-      <div class="buttonMenu">
-        <div id="cube"></div>
+      <div id="turn"></div>
+      <div id="playerContaner">
+        <!--p-->
       </div>
     </main>
     <footer>
