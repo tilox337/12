@@ -49,9 +49,22 @@ function renderCards(player) {
   checkWin(player);
 }
 
-function rollDice() {
-  cubeButton1.disabled = false;
-  cubeButton2.disabled = false;
+function rollDice(player) {
+  cubeEl.innerHTML = "";
+  cubeEl.style.fontSize = "14px";
+
+  cubeButton1 = document.createElement("button");
+  cubeEl.appendChild(cubeButton1);
+  cubeButton2 = document.createElement("button");
+  cubeEl.appendChild(cubeButton2);
+  rerolButton = document.createElement("button");
+  cubeEl.appendChild(rerolButton);
+  rerolButton.innerText = "Skip";
+
+  cubeButton1.addEventListener("click", () => deleteTwoCards(player));
+  cubeButton2.addEventListener("click", () => deleteOneCard(player));
+  rerolButton.addEventListener("click", () => switchPlayer(player));
+
   cube1 = Math.floor(Math.random() * 6) + 1;
   cube2 = Math.floor(Math.random() * 6) + 1;
 
@@ -59,13 +72,13 @@ function rollDice() {
   cubeButton2.innerText = cube1 + cube2;
 
   if (
-    !players[activePlayer].cards.includes(cube1) ||
-    !players[activePlayer].cards.includes(cube2) ||
+    !player.cards.includes(cube1) ||
+    !player.cards.includes(cube2) ||
     cube1 === cube2
   ) {
     cubeButton1.disabled = true;
   }
-  if (!players[activePlayer].cards.includes(cube1 + cube2)) {
+  if (!player.cards.includes(cube1 + cube2)) {
     cubeButton2.disabled = true;
   }
 }
@@ -79,44 +92,26 @@ function reset() {
     renderCards(player);
   }
 
-  cubeEl.innerHTML = "";
-  cubeEl.style.fontSize = "14px";
-
-  cubeButton1 = document.createElement("button");
-  cubeEl.appendChild(cubeButton1);
-  cubeButton2 = document.createElement("button");
-  cubeEl.appendChild(cubeButton2);
-  rerolButton = document.createElement("button");
-  cubeEl.appendChild(rerolButton);
-  rerolButton.innerText = "Skip";
-
-  cubeButton1.addEventListener("click", () => deleteTwoCards());
-  cubeButton2.addEventListener("click", () => deleteOneCard());
-  rerolButton.addEventListener("click", () => switchPlayer());
-
-  rollDice();
+  rollDice(players[0]);
 }
 
 function checkWin(player) {
   if (player.cards.length === 0) {
-    cubeEl.style.fontSize = "56px";
-    cubeEl.innerHTML = "Player " + (activePlayer + 1) + " win!";
+    cubeEl.style.fontSize = "larger";
+    cubeEl.innerHTML = "Player " + (players.indexOf(player) + 1) + " win!";
     document.querySelector("#turn").innerHTML = "";
   }
 }
-
-function deleteOneCard() {
-  let player = players[activePlayer];
+function deleteOneCard(player) {
   let index = player.cards.indexOf(cube1 + cube2);
   player.cards.splice(index, 1);
   console.log(player.cards);
 
   renderCards(player);
-  switchPlayer();
+  switchPlayer(player);
 }
 
-function deleteTwoCards() {
-  let player = players[activePlayer];
+function deleteTwoCards(player) {
   let index = player.cards.indexOf(cube1);
   player.cards.splice(index, 1);
   index = player.cards.indexOf(cube2);
@@ -126,14 +121,14 @@ function deleteTwoCards() {
   );
 
   renderCards(player);
-  switchPlayer();
+  switchPlayer(player);
 }
 
 function switchPlayer() {
   activePlayer = (activePlayer + 1) % numOfPlayers;
   document.querySelector("#turn").innerHTML =
-    "Player " + (activePlayer + 1) + " turn";
-  rollDice();
+    "Player " + (newIndex + 1) + " turn";
+  rollDice(players[newIndex]);
 }
 
 function startGame() {
