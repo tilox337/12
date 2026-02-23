@@ -127,32 +127,38 @@ function deleteTwoCards(player) {
 function switchPlayer() {
   activePlayer = (activePlayer + 1) % numOfPlayers;
   document.querySelector("#turn").innerHTML =
-    "Player " + (newIndex + 1) + " turn";
-  rollDice(players[newIndex]);
+    "Player " + (activePlayer + 1) + " turn";
+  rollDice(players[activePlayer]);
 }
 
 function startGame() {
   let playerContanerEl = document.querySelector("#playerContaner");
+  playerContanerEl.innerHTML = "";
+  players = [];
+
   numOfPlayers = document.querySelector("#playerCount").value;
   for (i = 0; i < numOfPlayers; i++) {
     let playerN = new player();
     playerN.playerEl = document.createElement("div");
+    playerN.playerEl.style.min_width = "7em";
     playerContanerEl.appendChild(playerN.playerEl);
     players.push(playerN);
     let playerWidth = 90 / numOfPlayers;
     playerN.playerEl.style.width = playerWidth + "%";
-    createPlaerUI(playerN);
+    createPlayerUI(playerN);
   }
 
   resetButton = document.querySelector("#newGame");
   cubeEl = document.createElement("div");
   cubeEl.id = "cube";
-  playerContanerEl.appendChild(cubeEl);
+  document.querySelector("footer").appendChild(cubeEl);
+  //playerContanerEl.appendChild(cubeEl);
+  //document.querySelector("#gameStart").innerHTML = "";
 
   reset();
 }
 
-function createPlaerUI(player) {
+function createPlayerUI(player) {
   /*
   let playerId = document.createElement("div");
   playerId.innerText = "Player " + players.indexOf(player);
