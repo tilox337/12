@@ -1,13 +1,13 @@
-class player {
+class Player {
   constructor() {
     this.cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     this.playerEl = Element;
   }
 }
 
-let player1 = new player();
+let player1 = new Player();
 player1.playerEl = document.querySelector("#firstPlayer");
-let player2 = new player();
+let player2 = new Player();
 player2.playerEl = document.querySelector("#secondPlayer");
 let players = [];
 let numOfPlayers;
@@ -24,7 +24,6 @@ let startButton = document.querySelector("#playerCountButton");
 startButton.addEventListener("click", startGame);
 
 //reset();
-//resetButton.addEventListener("click", () => reset(players[0]));
 
 function renderCards(player) {
   let cardsEl = player.playerEl.querySelector(".cards");
@@ -32,13 +31,7 @@ function renderCards(player) {
   for (let i = 0; i < 12; i++) {
     let div = document.createElement("div");
     div.innerText = i + 1;
-    div.style.display = "flex";
-    div.style.justifyContent = "center";
-    div.style.alignItems = "center";
-    div.style.width = "2em";
-    div.style.height = "3em";
-    div.style.color = "black";
-    div.style.borderRadius = "0.25em";
+    div.classList.add("card");
     if (player.cards.includes(i + 1)) {
       div.style.backgroundColor = "bisque";
     } else {
@@ -102,6 +95,7 @@ function checkWin(player) {
     document.querySelector("#turn").innerHTML = "";
   }
 }
+
 function deleteOneCard(player) {
   let index = player.cards.indexOf(cube1 + cube2);
   player.cards.splice(index, 1);
@@ -138,27 +132,32 @@ function startGame() {
 
   numOfPlayers = document.querySelector("#playerCount").value;
   for (i = 0; i < numOfPlayers; i++) {
-    let playerN = new player();
+    let playerN = new Player();
     playerN.playerEl = document.createElement("div");
-    playerN.playerEl.style.min_width = "7em";
+    playerN.playerEl.style.minWidth = "7em";
     playerContanerEl.appendChild(playerN.playerEl);
     players.push(playerN);
     let playerWidth = 90 / numOfPlayers;
     playerN.playerEl.style.width = playerWidth + "%";
-    createPlayerUI(playerN);
+    createPlayer(playerN);
   }
 
+  let newGameEl = document.createElement("button");
+  newGameEl.id = "newGame";
+  newGameEl.innerText = "Start new game";
+  document.querySelector("footer").appendChild(newGameEl);
   resetButton = document.querySelector("#newGame");
+  resetButton.addEventListener("click", () => reset(players[0]));
+
   cubeEl = document.createElement("div");
   cubeEl.id = "cube";
   document.querySelector("footer").appendChild(cubeEl);
-  //playerContanerEl.appendChild(cubeEl);
-  //document.querySelector("#gameStart").innerHTML = "";
 
+  document.querySelector("#gameStart").innerHTML = "";
   reset();
 }
 
-function createPlayerUI(player) {
+function createPlayer(player) {
   /*
   let playerId = document.createElement("div");
   playerId.innerText = "Player " + players.indexOf(player);
