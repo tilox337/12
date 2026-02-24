@@ -5,14 +5,11 @@ class Player {
   }
 }
 
-let player1 = new Player();
-player1.playerEl = document.querySelector("#firstPlayer");
-let player2 = new Player();
-player2.playerEl = document.querySelector("#secondPlayer");
 let players = [];
 let numOfPlayers;
-
 let activePlayer = 0;
+
+let cubeEl;
 let cube1;
 let cube2;
 
@@ -20,10 +17,27 @@ let rerolButton;
 let cubeButton1;
 let cubeButton2;
 
-let startButton = document.querySelector("#playerCountButton");
-startButton.addEventListener("click", startGame);
+satartNewGame();
 
-//reset();
+function satartNewGame() {
+  document.querySelector("#turn").innerHTML = "";
+  document.querySelector("#playerContaner").innerHTML = "";
+
+  let playerCountInput = document.createElement("input");
+  playerCountInput.id = "playerCount";
+  playerCountInput.type = "number";
+  playerCountInput.placeholder = "Number of players";
+  document.querySelector("#gameStart").appendChild(playerCountInput);
+
+  let startButton = document.createElement("button");
+  startButton.id = "playerCountButton";
+  startButton.innerText = "Enter";
+  document.querySelector("#gameStart").appendChild(startButton);
+
+  playerCountInput + startButton;
+  playerCountInput + startButton.addEventListener("click", startGame);
+  document.querySelector("footer").innerHTML = "";
+}
 
 function renderCards(player) {
   let cardsEl = player.playerEl.querySelector(".cards");
@@ -77,7 +91,6 @@ function rollDice(player) {
 }
 
 function reset() {
-  activePlayer = 0;
   document.querySelector("#turn").innerHTML =
     "Player " + (activePlayer + 1) + " turn";
   for (let player of players) {
@@ -90,8 +103,10 @@ function reset() {
 
 function checkWin(player) {
   if (player.cards.length === 0) {
-    cubeEl.style.fontSize = "larger";
-    cubeEl.innerHTML = "Player " + (players.indexOf(player) + 1) + " win!";
+    document.querySelector("#playerContaner").innerHTML =
+      "Player " + (players.indexOf(player) + 1) + " win!";
+    document.querySelector("#playerContaner").style.fontSize = "larger";
+
     document.querySelector("#turn").innerHTML = "";
   }
 }
@@ -119,9 +134,16 @@ function deleteTwoCards(player) {
 }
 
 function switchPlayer() {
+  players[activePlayer].playerEl.style.background =
+    "linear-gradient(135deg, #ff416c, #ff4b2b)";
+
   activePlayer = (activePlayer + 1) % numOfPlayers;
   document.querySelector("#turn").innerHTML =
     "Player " + (activePlayer + 1) + " turn";
+
+  players[activePlayer].playerEl.style.background =
+    "linear-gradient(135deg, #6e8efb, #a777e3)";
+
   rollDice(players[activePlayer]);
 }
 
@@ -129,25 +151,31 @@ function startGame() {
   let playerContanerEl = document.querySelector("#playerContaner");
   playerContanerEl.innerHTML = "";
   players = [];
+  activePlayer = 0;
 
   numOfPlayers = document.querySelector("#playerCount").value;
   for (i = 0; i < numOfPlayers; i++) {
     let playerN = new Player();
     playerN.playerEl = document.createElement("div");
-    playerN.playerEl.style.minWidth = "7em";
+    playerN.playerEl.style.minWidth = "10em";
+    playerN.playerEl.style.background =
+      "linear-gradient(135deg, #ff416c, #ff4b2b)";
+    playerN.playerEl.style.borderRadius = "1em";
     playerContanerEl.appendChild(playerN.playerEl);
     players.push(playerN);
     let playerWidth = 90 / numOfPlayers;
     playerN.playerEl.style.width = playerWidth + "%";
     createPlayer(playerN);
   }
+  players[activePlayer].playerEl.style.background =
+    "linear-gradient(135deg, #6e8efb, #a777e3)";
 
   let newGameEl = document.createElement("button");
   newGameEl.id = "newGame";
   newGameEl.innerText = "Start new game";
   document.querySelector("footer").appendChild(newGameEl);
   resetButton = document.querySelector("#newGame");
-  resetButton.addEventListener("click", () => reset(players[0]));
+  resetButton.addEventListener("click", satartNewGame);
 
   cubeEl = document.createElement("div");
   cubeEl.id = "cube";
@@ -158,13 +186,13 @@ function startGame() {
 }
 
 function createPlayer(player) {
-  /*
-  let playerId = document.createElement("div");
-  playerId.innerText = "Player " + players.indexOf(player);
-  playerId.style.justifyContent = "center";
-  player.playerEl.appendChild(playerId);
-  */
-  cardsEl = document.createElement("div");
+  let playerNumberEl = document.createElement("div");
+  playerNumberEl.innerText = "Player " + (players.indexOf(player) + 1);
+  player.playerEl.appendChild(playerNumberEl);
+  playerNumberEl.style.display = "flex";
+  playerNumberEl.style.justifyContent = "center";
+
+  let cardsEl = document.createElement("div");
   cardsEl.classList.add("cards");
   player.playerEl.appendChild(cardsEl);
 }
