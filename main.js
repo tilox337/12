@@ -33,15 +33,15 @@ function satartNewGame() {
   startButton.id = "playerCountButton";
   startButton.innerText = "Enter";
   document.querySelector("#gameStart").appendChild(startButton);
+  startButton.addEventListener("click", startGame);
 
-  playerCountInput + startButton;
-  playerCountInput + startButton.addEventListener("click", startGame);
   document.querySelector("footer").innerHTML = "";
 }
 
 function renderCards(player) {
   let cardsEl = player.playerEl.querySelector(".cards");
   cardsEl.innerHTML = "";
+
   for (let i = 0; i < 12; i++) {
     let div = document.createElement("div");
     div.innerText = i + 1;
@@ -53,6 +53,7 @@ function renderCards(player) {
     }
     cardsEl.appendChild(div);
   }
+
   checkWin(player);
 }
 
@@ -93,6 +94,7 @@ function rollDice(player) {
 function reset() {
   document.querySelector("#turn").innerHTML =
     "Player " + (activePlayer + 1) + " turn";
+
   for (let player of players) {
     player.cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     renderCards(player);
@@ -105,8 +107,9 @@ function checkWin(player) {
   if (player.cards.length === 0) {
     document.querySelector("#playerContaner").innerHTML =
       "Player " + (players.indexOf(player) + 1) + " win!";
-    document.querySelector("#playerContaner").style.fontSize = "larger";
+    document.querySelector("#playerContaner").style.fontSize = "5em";
 
+    document.querySelector("#cube").innerHTML = "";
     document.querySelector("#turn").innerHTML = "";
   }
 }
@@ -114,23 +117,20 @@ function checkWin(player) {
 function deleteOneCard(player) {
   let index = player.cards.indexOf(cube1 + cube2);
   player.cards.splice(index, 1);
-  console.log(player.cards);
 
-  renderCards(player);
   switchPlayer(player);
+  renderCards(player);
 }
 
 function deleteTwoCards(player) {
   let index = player.cards.indexOf(cube1);
   player.cards.splice(index, 1);
+
   index = player.cards.indexOf(cube2);
   player.cards.splice(index, 1);
-  console.log(
-    "Cards of player:" + (players.indexOf(player) + 1) + ":" + player.cards,
-  );
 
-  renderCards(player);
   switchPlayer(player);
+  renderCards(player);
 }
 
 function switchPlayer() {
@@ -150,6 +150,7 @@ function switchPlayer() {
 function startGame() {
   let playerContanerEl = document.querySelector("#playerContaner");
   playerContanerEl.innerHTML = "";
+  playerContanerEl.style.fontSize = "medium";
   players = [];
   activePlayer = 0;
 
@@ -162,9 +163,12 @@ function startGame() {
       "linear-gradient(135deg, #ff416c, #ff4b2b)";
     playerN.playerEl.style.borderRadius = "1em";
     playerContanerEl.appendChild(playerN.playerEl);
+
     players.push(playerN);
+
     let playerWidth = 90 / numOfPlayers;
     playerN.playerEl.style.width = playerWidth + "%";
+
     createPlayer(playerN);
   }
   players[activePlayer].playerEl.style.background =
