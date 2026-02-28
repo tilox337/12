@@ -150,7 +150,7 @@ function switchPlayer() {
 function startGame() {
   let playerContanerEl = document.querySelector("#playerContaner");
   playerContanerEl.innerHTML = "";
-  playerContanerEl.style.fontSize = "medium";
+  playerContanerEl.style.fontSize = "mediumk";
   players = [];
   activePlayer = 0;
 
@@ -158,7 +158,7 @@ function startGame() {
   for (i = 0; i < numOfPlayers; i++) {
     let playerN = new Player();
     playerN.playerEl = document.createElement("div");
-    playerN.playerEl.style.minWidth = "10em";
+    playerN.playerEl.style.minWidth = "15em";
     playerN.playerEl.style.background =
       "linear-gradient(135deg, #ff416c, #ff4b2b)";
     playerN.playerEl.style.borderRadius = "1em";
